@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firebase</title>
+  <script type="module" src="main.js"></script>
+</head>
+
+<body class="p-5">
+
+  <div id="login-page" style="display: none;">
+    <h1 class="text-3xl">Login Page</h1>
+    <button class="btn mt-3" id="btn-sign-in">Sign in with google</button>
+  </div>
+
+  <div id="dashboard-page" style="display: none;">
+    <h1 class="text-3xl">Dashboard</h1>
+    <p id="current-user"></p>
+    <button class="btn" id="btn-logout">Logout</button>
+
+    <div>
+      <br>
+      <label>for test only</label><br>
+      <input id="input-temp" class="input input-bordered" type="number">
+      <button id="btn-add-data" class="btn">Add data</button>
+    </div>
+
+    <h2 class="text-xl mt-7">Current Temp</h2>
+    <p id="current-temp"></p>
+
+    <h2 class="text-xl mt-7">Temp history</h2>
+    <table class="table w-96">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Temp</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+
+</body>
+
+</html>
