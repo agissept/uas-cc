@@ -1,13 +1,14 @@
 import "./style.css";
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import { getDatabase, ref, set, push, onChildAdded } from "firebase/database";
+import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import firebaseConfig from './firebase.config';
 
 // auth
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+
 auth.onAuthStateChanged(function (user) {
   if (user) {
     document.querySelector('#login-page').style.display = 'none'
@@ -22,7 +23,7 @@ auth.onAuthStateChanged(function (user) {
 document.querySelector('#btn-sign-in').addEventListener('click', () => {
   signInWithPopup(auth, provider)
     .then((result) => {
-      console.log('login success');      
+      console.log('login success');
     }).catch((error) => {
       console.log(error)
       alert("error happend check console")
@@ -33,12 +34,13 @@ document.querySelector('#btn-logout').addEventListener('click', () => {
     console.log('logout success');
   }).catch((error) => {
     console.log(error)
-    alert("error happend check console")  });
+    alert("error happend check console")
+  });
 })
 
 
 // for test only
-document.querySelector('#btn-add-data').addEventListener('click', () =>{
+document.querySelector('#btn-add-data').addEventListener('click', () => {
   writeUserData(document.querySelector('#input-temp').value)
 })
 
@@ -58,11 +60,17 @@ function writeUserData(temp) {
 
 const tbody = document.querySelector('tbody')
 
-onChildAdded(tempRef, (data) => {
-  const row = document.createElement('tr')
-  row.innerHTML = `<td>${data.val().date}</td><td>${data.val().temp}</td>`
+
+onValue(tempRef, (snapshot) => {
+  const data = snapshot.val()
   
-  tbody.insertBefore(row, tbody.firstChild)
+
+  tbody.innerHTML = ''
+  Object.keys(data).reverse().forEach((key) => {
+    const row = document.createElement('tr')
+    row.innerHTML = `<td>${data[key].date}</td><td>${data[key].temp}</td><td>${data[key].mac}</td>`
+    tbody.appendChild(row)
+  })
   
-  document.querySelector('#current-temp').innerHTML = data.val().temp
+  document.querySelector('#current-temp').innerHTML = data[Object.keys(data).reverse()[0]].temp
 });
